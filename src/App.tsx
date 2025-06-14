@@ -19,7 +19,8 @@ function App() {
     hasMusic,
     nextTrack,
     currentTrackIndex,
-    totalTracks
+    totalTracks,
+    stopMusic
   } = useBackgroundMusic();
 
   useEffect(() => {
@@ -29,6 +30,8 @@ function App() {
           if (prev <= 1) {
             setIsRunning(false);
             setIsCompleted(true);
+            // Stop music when timer completes
+            stopMusic();
             return 0;
           }
           return prev - 1;
@@ -46,7 +49,7 @@ function App() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, timeLeft]);
+  }, [isRunning, timeLeft, stopMusic]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
