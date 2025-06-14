@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX, SkipForward } from 'lucide-react';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
 
 function App() {
@@ -11,7 +11,10 @@ function App() {
   const { 
     isMusicEnabled, 
     toggleMusic, 
-    hasMusic
+    hasMusic,
+    nextTrack,
+    currentTrackIndex,
+    totalTracks
   } = useBackgroundMusic();
 
   useEffect(() => {
@@ -85,9 +88,10 @@ function App() {
         <div className="absolute right-1/4 top-0 w-px h-full bg-gradient-to-b from-transparent via-green-400 to-transparent"></div>
       </div>
 
-      {/* Music Toggle - Top Right */}
+      {/* Music Controls - Top Right */}
       {hasMusic && (
-        <div className="absolute top-6 right-6 z-20">
+        <div className="absolute top-6 right-6 z-20 flex flex-col items-center space-y-3">
+          {/* Music Toggle */}
           <button
             onClick={toggleMusic}
             className={`group relative w-12 h-12 rounded-full border transition-all duration-300 hover:scale-105 ${
@@ -105,6 +109,19 @@ function App() {
               )}
             </div>
           </button>
+
+          {/* Skip Track Button - Only show when music is playing */}
+          {isMusicEnabled && totalTracks > 1 && (
+            <button
+              onClick={nextTrack}
+              className="group relative w-9 h-9 rounded-full border border-gray-600 hover:border-green-400 transition-all duration-300 hover:scale-105 hover:bg-green-400/10"
+              title={`Skip to next track (${currentTrackIndex + 1}/${totalTracks})`}
+            >
+              <div className="flex items-center justify-center">
+                <SkipForward className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+              </div>
+            </button>
+          )}
         </div>
       )}
 
