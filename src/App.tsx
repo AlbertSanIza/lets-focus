@@ -198,7 +198,7 @@ function App() {
         </div>
       )}
 
-      <div className="relative z-10 flex flex-col items-center space-y-12">
+      <div className="relative z-10 flex flex-col items-center space-y-16">
         {/* Brand */}
         <div className="text-center">
           <h1 className="text-2xl md:text-3xl font-light tracking-[0.2em] text-slate-300 mb-2">
@@ -207,19 +207,30 @@ function App() {
           <div className="w-24 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent mx-auto"></div>
         </div>
 
-        {/* Timer Display */}
-        <div className={`relative border-2 rounded-2xl p-8 md:p-12 backdrop-blur-sm transition-all duration-300 ${getTimerBorderClass()}`}>
-          <div className={`text-6xl md:text-8xl font-mono font-light tracking-wider transition-colors duration-300 ${getTimerStateClass()}`}>
+        {/* Timer Display - Increased size 2x */}
+        <div className={`relative border-2 rounded-3xl p-16 md:p-24 backdrop-blur-sm transition-all duration-300 ${getTimerBorderClass()}`}>
+          <div className={`text-8xl md:text-9xl lg:text-[12rem] font-mono font-light tracking-wider transition-colors duration-300 ${getTimerStateClass()}`}>
             {formatTime(timeLeft)}
           </div>
           
           {/* Status indicator */}
-          <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
-            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+          <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+            <div className={`w-3 h-3 rounded-full transition-all duration-300 ${
               isCompleted ? 'bg-emerald-400 animate-pulse' :
               isRunning ? 'bg-emerald-400' : 'bg-slate-600'
             }`}></div>
           </div>
+        </div>
+
+        {/* Status Text */}
+        <div className="text-center">
+          <p className={`text-lg md:text-xl font-light tracking-wide transition-colors duration-300 ${
+            isCompleted ? 'text-emerald-400' :
+            isRunning ? 'text-emerald-400' : 'text-slate-400'
+          }`}>
+            {isCompleted ? 'FOCUS SESSION COMPLETE' :
+             isRunning ? 'FOCUS MODE ACTIVE' : 'READY TO FOCUS'}
+          </p>
         </div>
 
         {/* Time Slider - Only show when in reset state */}
@@ -260,8 +271,6 @@ function App() {
             </div>
           </div>
         )}
-
-    
 
         {/* Controls */}
         <div className="flex items-center space-x-6">
