@@ -255,7 +255,7 @@ function App() {
             >
               {/* Progress Fill */}
               <div 
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-500 rounded-full transition-all duration-200"
                 style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
               ></div>
               
