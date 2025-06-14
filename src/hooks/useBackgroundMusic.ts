@@ -12,15 +12,24 @@ export const useBackgroundMusic = () => {
       const tracks: string[] = [];
       let index = 1;
       
-      // Try to find sound files (soundN.mp3)
-      while (index <= 20) { // Check up to 20 files to be safe
+      // Try to find sound files (soundN.mp3) - check up to 20 but only add existing ones
+      while (index <= 4) {
         try {
           const response = await fetch(`/sound${index}.mp3`, { method: 'HEAD' });
           if (response.ok) {
             tracks.push(`/sound${index}.mp3`);
+          } else {
+            // If we hit a missing file and we already have some tracks, 
+            // assume we've found all consecutive tracks
+            if (tracks.length > 0) {
+              break;
+            }
           }
         } catch {
-          // File doesn't exist, continue to next
+          // File doesn't exist - if we have tracks, we're probably done with consecutive numbering
+          if (tracks.length > 0) {
+            break;
+          }
         }
         index++;
       }
