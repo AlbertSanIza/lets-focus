@@ -250,16 +250,6 @@ function App() {
                 ></div>
               </div>
               
-              {/* Current Value Display */}
-              <div className="flex justify-center mt-4">
-                <div className={`px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/30 transition-all duration-200 ${
-                  isDragging ? 'scale-105 bg-emerald-400/20' : ''
-                }`}>
-                  <span className="text-emerald-400 text-sm font-medium">
-                    {selectedMinutes} min{selectedMinutes !== 1 ? 's' : ''}
-                  </span>
-                </div>
-              </div>
               
               {/* Slider Labels */}
               <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
