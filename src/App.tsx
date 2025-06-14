@@ -81,6 +81,25 @@ function App() {
     setHasStarted(false);
   };
 
+  // Spacebar event handler
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Only trigger on spacebar and prevent if user is interacting with form elements
+      if (event.code === 'Space' && 
+          event.target instanceof HTMLElement && 
+          !['INPUT', 'TEXTAREA', 'BUTTON'].includes(event.target.tagName)) {
+        event.preventDefault(); // Prevent page scroll
+        handlePlayPause();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isCompleted, hasStarted, isRunning, selectedMinutes]); // Dependencies to ensure latest state
+
   const handleSliderChange = (value: number) => {
     setSelectedMinutes(value);
     if (!hasStarted && !isRunning) {
@@ -167,9 +186,9 @@ function App() {
   };
 
   const getPlayButtonTooltip = () => {
-    if (isCompleted) return 'Start New Session';
-    if (!hasStarted) return 'Start Timer';
-    return isRunning ? 'Pause Timer' : 'Resume Timer';
+    if (isCompleted) return 'Start New Session (Space)';
+    if (!hasStarted) return 'Start Timer (Space)';
+    return isRunning ? 'Pause Timer (Space)' : 'Resume Timer (Space)';
   };
 
   const isSliderDisabled = hasStarted || isRunning || isCompleted;
@@ -212,6 +231,16 @@ function App() {
           )}
         </div>
       )}
+
+      {/* Spacebar Hint */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex items-center space-x-2 text-slate-500 text-sm font-light">
+          <div className="px-3 py-1 border border-slate-600/50 rounded-md bg-slate-800/30 backdrop-blur-sm">
+            <span className="font-mono">SPACE</span>
+          </div>
+          <span>to {isRunning ? 'pause' : 'start'}</span>
+        </div>
+      </div>
 
       <div className="relative z-10 flex flex-col items-center space-y-12">
         {/* Brand */}
@@ -318,7 +347,7 @@ function App() {
               Time to take a break
             </p>
             <p className="text-slate-400 text-sm">
-              Click play to start another focus session
+              Press spacebar or click play to start another focus session
             </p>
           </div>
         )}
