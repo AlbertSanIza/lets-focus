@@ -12,33 +12,25 @@ export const useBackgroundMusic = () => {
       const tracks: string[] = [];
       let index = 1;
       
-      // Try to find music files (assuming they're named music1.mp3, music2.mp3, etc.)
-      while (index <= 10) { // Check up to 10 files
+      // Try to find sound files (soundN.mp3)
+      while (index <= 20) { // Check up to 20 files to be safe
         try {
-          const response = await fetch(`/music${index}.mp3`, { method: 'HEAD' });
+          const response = await fetch(`/sound${index}.mp3`, { method: 'HEAD' });
           if (response.ok) {
-            tracks.push(`/music${index}.mp3`);
-          } else {
-            break; // Stop when we can't find more files
+            tracks.push(`/sound${index}.mp3`);
           }
         } catch {
-          break;
+          // File doesn't exist, continue to next
         }
         index++;
       }
       
-      // Also check for common music file names
-      const commonNames = ['background.mp3', 'ambient.mp3', 'focus.mp3', 'chill.mp3'];
-      for (const name of commonNames) {
-        try {
-          const response = await fetch(`/${name}`, { method: 'HEAD' });
-          if (response.ok && !tracks.includes(`/${name}`)) {
-            tracks.push(`/${name}`);
-          }
-        } catch {
-          // File doesn't exist, continue
-        }
-      }
+      // Sort tracks to ensure proper order (sound1, sound2, etc.)
+      tracks.sort((a, b) => {
+        const aNum = parseInt(a.match(/sound(\d+)\.mp3/)?.[1] || '0');
+        const bNum = parseInt(b.match(/sound(\d+)\.mp3/)?.[1] || '0');
+        return aNum - bNum;
+      });
       
       setMusicTracks(tracks);
     };
