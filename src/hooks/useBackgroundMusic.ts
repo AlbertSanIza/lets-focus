@@ -108,11 +108,20 @@ export const useBackgroundMusic = () => {
     }
   };
 
+  const stopMusic = () => {
+    setIsMusicEnabled(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
   return {
     isMusicEnabled,
     toggleMusic,
     nextTrack,
     setVolume,
+    stopMusic,
     currentTrackIndex,
     totalTracks: musicTracks.length,
     hasMusic: musicTracks.length > 0

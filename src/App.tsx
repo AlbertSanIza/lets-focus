@@ -19,7 +19,8 @@ function App() {
     hasMusic,
     nextTrack,
     currentTrackIndex,
-    totalTracks
+    totalTracks,
+    stopMusic
   } = useBackgroundMusic();
 
   useEffect(() => {
@@ -29,6 +30,8 @@ function App() {
           if (prev <= 1) {
             setIsRunning(false);
             setIsCompleted(true);
+            // Stop music when timer completes
+            stopMusic();
             return 0;
           }
           return prev - 1;
@@ -46,7 +49,7 @@ function App() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, timeLeft]);
+  }, [isRunning, timeLeft, stopMusic]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -94,6 +97,9 @@ function App() {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    // Only allow interaction if timer hasn't started
+    if (hasStarted || isRunning || isCompleted) return;
+    
     setIsDragging(true);
     const newValue = calculateSliderValue(e.clientX);
     handleSliderChange(newValue);
@@ -110,6 +116,9 @@ function App() {
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    // Only allow interaction if timer hasn't started
+    if (hasStarted || isRunning || isCompleted) return;
+    
     setIsDragging(true);
     const touch = e.touches[0];
     const newValue = calculateSliderValue(touch.clientX);
@@ -163,7 +172,7 @@ function App() {
     return isRunning ? 'Pause Timer' : 'Resume Timer';
   };
 
-  const showSlider = !hasStarted && !isRunning && !isCompleted;
+  const isSliderDisabled = hasStarted || isRunning || isCompleted;
 
   return (
     <AuroraBackground className="min-h-screen">
@@ -228,45 +237,46 @@ function App() {
           </div>
         </div>
 
-        {/* Time Slider - Only show when in reset state */}
-        {showSlider && (
-          <div className="w-full max-w-md px-4 animate-fade-in">
-            <div className="relative">
-              {/* Slider Track */}
+        {/* Time Slider - Always visible but disabled when timer has started */}
+        <div className={`w-full max-w-md px-4 transition-all duration-300 ${
+          isSliderDisabled ? 'opacity-30' : 'opacity-100 animate-fade-in'
+        }`}>
+          <div className="relative">
+            {/* Slider Track */}
+            <div 
+              ref={sliderRef}
+              className={`relative h-3 bg-slate-800/50 rounded-full backdrop-blur-sm border border-slate-700/30 transition-all duration-200 ${
+                isSliderDisabled 
+                  ? 'cursor-not-allowed' 
+                  : `cursor-pointer ${isDragging ? 'scale-105' : 'hover:scale-102'}`
+              }`}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+            >
+              {/* Progress Fill */}
               <div 
-                ref={sliderRef}
-                className={`relative h-3 bg-slate-800/50 rounded-full backdrop-blur-sm border border-slate-700/30 cursor-pointer transition-all duration-200 ${
-                  isDragging ? 'scale-105' : 'hover:scale-102'
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200"
+                style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
+              ></div>
+              
+              {/* Slider Thumb */}
+              <div 
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-400 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 ${
+                  isSliderDisabled 
+                    ? 'cursor-not-allowed' 
+                    : `cursor-grab ${isDragging ? 'scale-125 cursor-grabbing shadow-xl' : 'hover:scale-110'}`
                 }`}
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-              >
-                {/* Progress Fill */}
-                <div 
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200"
-                  style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
-                ></div>
-                
-                {/* Slider Thumb */}
-                <div 
-                  className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-400 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 cursor-grab ${
-                    isDragging ? 'scale-125 cursor-grabbing shadow-xl' : 'hover:scale-110'
-                  }`}
-                  style={{ left: `${((selectedMinutes - 1) / 59) * 100}%` }}
-                ></div>
-              </div>
-              
-              
-              {/* Slider Labels */}
-              <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
-                <span>1 min</span>
-                <span>60 min</span>
-              </div>
+                style={{ left: `${((selectedMinutes - 1) / 59) * 100}%` }}
+              ></div>
+            </div>
+            
+            {/* Slider Labels */}
+            <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
+              <span>1 min</span>
+              <span>60 min</span>
             </div>
           </div>
-        )}
-
-      
+        </div>
 
         {/* Controls */}
         <div className="flex items-center space-x-6">
