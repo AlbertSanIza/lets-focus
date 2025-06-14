@@ -232,16 +232,7 @@ function App() {
         </div>
       )}
 
-      {/* Spacebar Hint */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex items-center space-x-2 text-slate-500 text-sm font-light">
-          <div className="px-3 py-1 border border-slate-600/50 rounded-md bg-slate-800/30 backdrop-blur-sm">
-            <span className="font-mono">SPACE</span>
-          </div>
-          <span>to {isRunning ? 'pause' : 'start'}</span>
-        </div>
-      </div>
-
+    
       <div className="relative z-10 flex flex-col items-center space-y-12">
         {/* Brand */}
         <div className="text-center">
