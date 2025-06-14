@@ -12,28 +12,15 @@ export const useBackgroundMusic = () => {
       const tracks: string[] = [];
       let index = 1;
       
-      // Try to find sound files (soundN.mp3) - only check up to 10 to be more efficient
-      while (index <= 10) {
+      // Try to find sound files (soundN.mp3)
+      while (index <= 20) { // Check up to 20 files to be safe
         try {
           const response = await fetch(`/sound${index}.mp3`, { method: 'HEAD' });
           if (response.ok) {
             tracks.push(`/sound${index}.mp3`);
-          } else {
-            // If we get a 404, check a few more in case there are gaps
-            if (response.status === 404 && tracks.length === 0 && index < 5) {
-              index++;
-              continue;
-            }
-            // If we've found tracks and hit a 404, we're probably done
-            if (response.status === 404 && tracks.length > 0) {
-              break;
-            }
           }
         } catch {
-          // Network error or file doesn't exist
-          if (tracks.length > 0) {
-            break; // Stop if we've found some tracks and hit an error
-          }
+          // File doesn't exist, continue to next
         }
         index++;
       }
