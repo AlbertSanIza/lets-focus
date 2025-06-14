@@ -132,6 +132,7 @@ function App() {
                 <SkipForward className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors" />
               </div>
             </div>
+          </button>
           )}
         </div>
       )}
