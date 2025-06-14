@@ -1,11 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { useBackgroundMusic } from './hooks/useBackgroundMusic';
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const { 
+    isMusicEnabled, 
+    toggleMusic, 
+    hasMusic
+  } = useBackgroundMusic();
 
   useEffect(() => {
     if (isRunning && timeLeft > 0) {
@@ -77,6 +84,29 @@ function App() {
         <div className="absolute left-1/4 top-0 w-px h-full bg-gradient-to-b from-transparent via-green-400 to-transparent"></div>
         <div className="absolute right-1/4 top-0 w-px h-full bg-gradient-to-b from-transparent via-green-400 to-transparent"></div>
       </div>
+
+      {/* Music Toggle - Top Right */}
+      {hasMusic && (
+        <div className="absolute top-6 right-6 z-20">
+          <button
+            onClick={toggleMusic}
+            className={`group relative w-12 h-12 rounded-full border transition-all duration-300 hover:scale-105 ${
+              isMusicEnabled 
+                ? 'border-green-400 bg-green-400/10 hover:bg-green-400/20' 
+                : 'border-gray-600 hover:border-green-400 hover:bg-green-400/10'
+            }`}
+            title={isMusicEnabled ? 'Turn off background music' : 'Turn on background music'}
+          >
+            <div className="flex items-center justify-center">
+              {isMusicEnabled ? (
+                <Volume2 className="w-5 h-5 text-green-400 transition-colors" />
+              ) : (
+                <VolumeX className="w-5 h-5 text-gray-400 group-hover:text-green-400 transition-colors" />
+              )}
+            </div>
+          </button>
+        </div>
+      )}
 
       <div className="relative z-10 flex flex-col items-center space-y-12">
         {/* Brand */}
