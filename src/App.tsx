@@ -157,6 +157,12 @@ function App() {
     return 'border-slate-600/30 bg-slate-800/20';
   };
 
+  const getPlayButtonTooltip = () => {
+    if (isCompleted) return 'Start New Session';
+    if (!hasStarted) return 'Start Timer';
+    return isRunning ? 'Pause Timer' : 'Resume Timer';
+  };
+
   const showSlider = !hasStarted && !isRunning && !isCompleted;
 
   return (
@@ -261,7 +267,16 @@ function App() {
           </div>
         )}
 
-    
+        {/* Status Text */}
+        <div className="text-center">
+          <p className={`text-sm md:text-base font-light tracking-wide transition-colors duration-300 ${
+            isCompleted ? 'text-emerald-400' :
+            isRunning ? 'text-emerald-400' : 'text-slate-400'
+          }`}>
+            {isCompleted ? 'FOCUS SESSION COMPLETE' :
+             isRunning ? 'FOCUS MODE ACTIVE' : 'READY TO FOCUS'}
+          </p>
+        </div>
 
         {/* Controls */}
         <div className="flex items-center space-x-6">
@@ -273,6 +288,7 @@ function App() {
                 ? 'border-emerald-400/50 bg-emerald-400/10 hover:bg-emerald-400/20' 
                 : 'border-slate-600/50 hover:border-emerald-400/50 hover:bg-emerald-400/10'
             }`}
+            title={getPlayButtonTooltip()}
           >
             <div className="flex items-center justify-center">
               {isRunning ? (
@@ -287,6 +303,7 @@ function App() {
           <button
             onClick={handleReset}
             className="group relative w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-600/50 hover:border-slate-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-slate-800/50"
+            title="Reset Timer"
           >
             <div className="flex items-center justify-center">
               <RotateCcw className="w-4 h-4 md:w-5 md:h-5 text-slate-400 group-hover:text-slate-300 transition-colors" />
