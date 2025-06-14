@@ -261,7 +261,7 @@ function App() {
               
               {/* Slider Thumb */}
               <div 
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-400 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 ${
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-100 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 ${
                   isSliderDisabled 
                     ? 'cursor-not-allowed' 
                     : `cursor-grab ${isDragging ? 'scale-125 cursor-grabbing shadow-xl' : 'hover:scale-110'}`
