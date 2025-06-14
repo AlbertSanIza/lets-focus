@@ -163,15 +163,6 @@ function App() {
         {/* Time Slider - Only show when in reset state */}
         {showSlider && (
           <div className="w-full max-w-md px-4 animate-fade-in">
-            <div className="text-center mb-6">
-              <p className="text-slate-400 text-sm font-light tracking-wide mb-2">
-                FOCUS DURATION
-              </p>
-              <p className="text-emerald-400 text-lg font-light">
-                {selectedMinutes} minute{selectedMinutes !== 1 ? 's' : ''}
-              </p>
-            </div>
-            
             <div className="relative">
               {/* Slider Track */}
               <div className="relative h-2 bg-slate-800/50 rounded-full backdrop-blur-sm border border-slate-700/30">
