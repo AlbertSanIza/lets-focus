@@ -255,13 +255,13 @@ function App() {
             >
               {/* Progress Fill */}
               <div 
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-500 rounded-full transition-all duration-200"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-200"
                 style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
               ></div>
               
               {/* Slider Thumb */}
               <div 
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-400 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 ${
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-500 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 ${
                   isSliderDisabled 
                     ? 'cursor-not-allowed' 
                     : `cursor-grab ${isDragging ? 'scale-125 cursor-grabbing shadow-xl' : 'hover:scale-110'}`
