@@ -69,7 +69,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       {/* Subtle background lines */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400 to-transparent"></div>
@@ -88,7 +88,7 @@ function App() {
         </div>
 
         {/* Timer Display */}
-        <div className={`relative border-2 rounded-2xl p-8 md:p-12 backdrop-blur-sm bg-slate-800/30 transition-all duration-300 ${getTimerBorderClass()}`}>
+        <div className={`relative border-2 rounded-2xl p-8 md:p-12 backdrop-blur-sm bg-gray-900/30 transition-all duration-300 ${getTimerBorderClass()}`}>
           <div className={`text-6xl md:text-8xl font-mono font-light tracking-wider transition-colors duration-300 ${getTimerStateClass()}`}>
             {formatTime(timeLeft)}
           </div>
