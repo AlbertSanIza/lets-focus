@@ -5,9 +5,13 @@ import { AuroraBackground } from './components/ui/aurora-background';
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
+  const [selectedMinutes, setSelectedMinutes] = useState(25); // For the slider
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false); // Track if timer has ever been started
+  const [isDragging, setIsDragging] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
   
   const { 
     isMusicEnabled, 
@@ -53,9 +57,15 @@ function App() {
   const handlePlayPause = () => {
     if (isCompleted) {
       // Reset if completed
-      setTimeLeft(25 * 60);
+      setTimeLeft(selectedMinutes * 60);
       setIsCompleted(false);
       setIsRunning(true);
+      setHasStarted(true);
+    } else if (!hasStarted) {
+      // First time starting - use selected time
+      setTimeLeft(selectedMinutes * 60);
+      setIsRunning(true);
+      setHasStarted(true);
     } else {
       setIsRunning(!isRunning);
     }
@@ -63,9 +73,77 @@ function App() {
 
   const handleReset = () => {
     setIsRunning(false);
-    setTimeLeft(25 * 60);
+    setTimeLeft(selectedMinutes * 60);
     setIsCompleted(false);
+    setHasStarted(false);
   };
+
+  const handleSliderChange = (value: number) => {
+    setSelectedMinutes(value);
+    if (!hasStarted && !isRunning) {
+      setTimeLeft(value * 60);
+    }
+  };
+
+  const calculateSliderValue = (clientX: number) => {
+    if (!sliderRef.current) return selectedMinutes;
+    
+    const rect = sliderRef.current.getBoundingClientRect();
+    const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    return Math.round(1 + percentage * 59); // 1 to 60 minutes
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const newValue = calculateSliderValue(e.clientX);
+    handleSliderChange(newValue);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    const newValue = calculateSliderValue(e.clientX);
+    handleSliderChange(newValue);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    const newValue = calculateSliderValue(touch.clientX);
+    handleSliderChange(newValue);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging) return;
+    e.preventDefault(); // Prevent scrolling
+    const touch = e.touches[0];
+    const newValue = calculateSliderValue(touch.clientX);
+    handleSliderChange(newValue);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Add global event listeners for mouse and touch events
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isDragging]);
 
   const getTimerStateClass = () => {
     if (isCompleted) return 'text-emerald-400 animate-pulse';
@@ -78,6 +156,8 @@ function App() {
     if (isRunning) return 'border-emerald-400/30 shadow-lg shadow-emerald-400/10 bg-emerald-400/5';
     return 'border-slate-600/30 bg-slate-800/20';
   };
+
+  const showSlider = !hasStarted && !isRunning && !isCompleted;
 
   return (
     <AuroraBackground className="min-h-screen">
@@ -113,7 +193,7 @@ function App() {
               <div className="flex items-center justify-center">
                 <SkipForward className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors" />
               </div>
-            </button>
+             </button>
           )}
         </div>
       )}
@@ -141,6 +221,45 @@ function App() {
             }`}></div>
           </div>
         </div>
+
+        {/* Time Slider - Only show when in reset state */}
+        {showSlider && (
+          <div className="w-full max-w-md px-4 animate-fade-in">
+            <div className="relative">
+              {/* Slider Track */}
+              <div 
+                ref={sliderRef}
+                className={`relative h-3 bg-slate-800/50 rounded-full backdrop-blur-sm border border-slate-700/30 cursor-pointer transition-all duration-200 ${
+                  isDragging ? 'scale-105' : 'hover:scale-102'
+                }`}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+              >
+                {/* Progress Fill */}
+                <div 
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200"
+                  style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
+                ></div>
+                
+                {/* Slider Thumb */}
+                <div 
+                  className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-7 h-7 bg-emerald-400 rounded-full border-3 border-slate-900 shadow-lg transition-all duration-200 cursor-grab ${
+                    isDragging ? 'scale-125 cursor-grabbing shadow-xl' : 'hover:scale-110'
+                  }`}
+                  style={{ left: `${((selectedMinutes - 1) / 59) * 100}%` }}
+                ></div>
+              </div>
+              
+              
+              {/* Slider Labels */}
+              <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
+                <span>1 min</span>
+                <span>30 min</span>
+                <span>60 min</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Status Text */}
         <div className="text-center">
