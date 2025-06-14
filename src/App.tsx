@@ -152,13 +152,6 @@ function App() {
             {isCompleted ? 'FOCUS SESSION COMPLETE' :
              isRunning ? 'FOCUS MODE ACTIVE' : 'READY TO FOCUS'}
           </p>
-          
-          {/* Music status */}
-          {hasMusic && isMusicEnabled && (
-            <p className="text-xs text-green-400/70 mt-1 tracking-wide">
-              AMBIENT MUSIC PLAYING
-            </p>
-          )}
         </div>
 
         {/* Controls */}
