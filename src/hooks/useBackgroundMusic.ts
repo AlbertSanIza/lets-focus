@@ -13,7 +13,7 @@ export const useBackgroundMusic = () => {
       let index = 1;
       
       // Try to find sound files (soundN.mp3) - check up to 20 but only add existing ones
-      while (index <= 20) {
+      while (index <= 5) {
         try {
           const response = await fetch(`/sound${index}.mp3`, { method: 'HEAD' });
           if (response.ok) {
