@@ -5,8 +5,10 @@ import { AuroraBackground } from './components/ui/aurora-background';
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
+  const [selectedMinutes, setSelectedMinutes] = useState(25); // For the slider
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false); // Track if timer has ever been started
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const { 
@@ -53,9 +55,15 @@ function App() {
   const handlePlayPause = () => {
     if (isCompleted) {
       // Reset if completed
-      setTimeLeft(25 * 60);
+      setTimeLeft(selectedMinutes * 60);
       setIsCompleted(false);
       setIsRunning(true);
+      setHasStarted(true);
+    } else if (!hasStarted) {
+      // First time starting - use selected time
+      setTimeLeft(selectedMinutes * 60);
+      setIsRunning(true);
+      setHasStarted(true);
     } else {
       setIsRunning(!isRunning);
     }
@@ -63,8 +71,16 @@ function App() {
 
   const handleReset = () => {
     setIsRunning(false);
-    setTimeLeft(25 * 60);
+    setTimeLeft(selectedMinutes * 60);
     setIsCompleted(false);
+    setHasStarted(false);
+  };
+
+  const handleSliderChange = (value: number) => {
+    setSelectedMinutes(value);
+    if (!hasStarted && !isRunning) {
+      setTimeLeft(value * 60);
+    }
   };
 
   const getTimerStateClass = () => {
@@ -78,6 +94,8 @@ function App() {
     if (isRunning) return 'border-emerald-400/30 shadow-lg shadow-emerald-400/10 bg-emerald-400/5';
     return 'border-slate-600/30 bg-slate-800/20';
   };
+
+  const showSlider = !hasStarted && !isRunning && !isCompleted;
 
   return (
     <AuroraBackground className="min-h-screen">
@@ -141,6 +159,54 @@ function App() {
             }`}></div>
           </div>
         </div>
+
+        {/* Time Slider - Only show when in reset state */}
+        {showSlider && (
+          <div className="w-full max-w-md px-4 animate-fade-in">
+            <div className="text-center mb-6">
+              <p className="text-slate-400 text-sm font-light tracking-wide mb-2">
+                FOCUS DURATION
+              </p>
+              <p className="text-emerald-400 text-lg font-light">
+                {selectedMinutes} minute{selectedMinutes !== 1 ? 's' : ''}
+              </p>
+            </div>
+            
+            <div className="relative">
+              {/* Slider Track */}
+              <div className="relative h-2 bg-slate-800/50 rounded-full backdrop-blur-sm border border-slate-700/30">
+                {/* Progress Fill */}
+                <div 
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200"
+                  style={{ width: `${((selectedMinutes - 1) / 59) * 100}%` }}
+                ></div>
+                
+                {/* Slider Input */}
+                <input
+                  type="range"
+                  min="1"
+                  max="60"
+                  value={selectedMinutes}
+                  onChange={(e) => handleSliderChange(parseInt(e.target.value))}
+                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                
+                {/* Slider Thumb */}
+                <div 
+                  className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-emerald-400 rounded-full border-2 border-slate-900 shadow-lg transition-all duration-200 hover:scale-110"
+                  style={{ left: `${((selectedMinutes - 1) / 59) * 100}%` }}
+                ></div>
+              </div>
+              
+              {/* Slider Labels */}
+              <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
+                <span>1 min</span>
+                <span>30 min</span>
+                <span>60 min</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Status Text */}
         <div className="text-center">
