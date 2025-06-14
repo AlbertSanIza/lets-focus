@@ -11,9 +11,7 @@ function App() {
   const { 
     isMusicEnabled, 
     toggleMusic, 
-    hasMusic,
-    currentTrackIndex,
-    totalTracks
+    hasMusic
   } = useBackgroundMusic();
 
   useEffect(() => {
@@ -106,15 +104,6 @@ function App() {
                 <VolumeX className="w-5 h-5 text-gray-400 group-hover:text-green-400 transition-colors" />
               )}
             </div>
-            
-            {/* Track indicator */}
-            {isMusicEnabled && totalTracks > 1 && (
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                <div className="text-xs text-green-400 font-mono">
-                  {currentTrackIndex + 1}/{totalTracks}
-                </div>
-              </div>
-            )}
           </button>
         </div>
       )}
