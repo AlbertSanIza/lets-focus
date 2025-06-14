@@ -260,23 +260,13 @@ function App() {
               {/* Slider Labels */}
               <div className="flex justify-between mt-3 text-xs text-slate-500 font-light">
                 <span>1 min</span>
-                <span>30 min</span>
                 <span>60 min</span>
               </div>
             </div>
           </div>
         )}
 
-        {/* Status Text */}
-        <div className="text-center">
-          <p className={`text-sm md:text-base font-light tracking-wide transition-colors duration-300 ${
-            isCompleted ? 'text-emerald-400' :
-            isRunning ? 'text-emerald-400' : 'text-slate-400'
-          }`}>
-            {isCompleted ? 'FOCUS SESSION COMPLETE' :
-             isRunning ? 'FOCUS MODE ACTIVE' : 'READY TO FOCUS'}
-          </p>
-        </div>
+      
 
         {/* Controls */}
         <div className="flex items-center space-x-6">
