@@ -224,7 +224,7 @@ function App() {
 
         {/* Timer Display */}
         <div className={`relative border-2 rounded-2xl p-8 md:p-12 backdrop-blur-sm transition-all duration-300 ${getTimerBorderClass()}`}>
-          <div className={`text-7xl md:text-8xl font-mono font-light tracking-wider transition-colors duration-300 ${getTimerStateClass()}`}>
+          <div className={`text-8xl md:text-8xl font-mono font-light tracking-wider transition-colors duration-300 ${getTimerStateClass()}`}>
             {formatTime(timeLeft)}
           </div>
           
