@@ -131,7 +131,7 @@ function App() {
               <div className="flex items-center justify-center">
                 <SkipForward className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors" />
               </div>
-            </button>
+            </div>
           )}
         </div>
       )}
