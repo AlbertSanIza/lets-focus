@@ -70,13 +70,13 @@ function App() {
   const getTimerStateClass = () => {
     if (isCompleted) return 'text-emerald-400 animate-pulse';
     if (isRunning) return 'text-emerald-400';
-    return 'text-slate-300 dark:text-slate-400';
+    return 'text-slate-300';
   };
 
   const getTimerBorderClass = () => {
     if (isCompleted) return 'border-emerald-400/50 shadow-lg shadow-emerald-400/20 animate-pulse bg-emerald-400/5';
     if (isRunning) return 'border-emerald-400/30 shadow-lg shadow-emerald-400/10 bg-emerald-400/5';
-    return 'border-slate-300/20 dark:border-slate-600/30 bg-white/10 dark:bg-slate-800/20';
+    return 'border-slate-600/30 bg-slate-800/20';
   };
 
   return (
@@ -90,7 +90,7 @@ function App() {
             className={`group relative w-12 h-12 rounded-full border backdrop-blur-sm transition-all duration-300 hover:scale-105 ${
               isMusicEnabled 
                 ? 'border-emerald-400/50 bg-emerald-400/10 hover:bg-emerald-400/20' 
-                : 'border-slate-300/30 dark:border-slate-600/50 hover:border-emerald-400/50 hover:bg-emerald-400/10'
+                : 'border-slate-600/50 hover:border-emerald-400/50 hover:bg-emerald-400/10'
             }`}
             title={isMusicEnabled ? 'Turn off background music' : 'Turn on background music'}
           >
@@ -98,7 +98,7 @@ function App() {
               {isMusicEnabled ? (
                 <Volume2 className="w-5 h-5 text-emerald-400 transition-colors" />
               ) : (
-                <VolumeX className="w-5 h-5 text-slate-400 dark:text-slate-500 group-hover:text-emerald-400 transition-colors" />
+                <VolumeX className="w-5 h-5 text-slate-500 group-hover:text-emerald-400 transition-colors" />
               )}
             </div>
           </button>
@@ -107,11 +107,11 @@ function App() {
           {isMusicEnabled && totalTracks > 1 && (
             <button
               onClick={nextTrack}
-              className="group relative w-9 h-9 rounded-full border border-slate-300/30 dark:border-slate-600/50 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-emerald-400/10"
+              className="group relative w-9 h-9 rounded-full border border-slate-600/50 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-emerald-400/10"
               title={`Skip to next track (${currentTrackIndex + 1}/${totalTracks})`}
             >
               <div className="flex items-center justify-center">
-                <SkipForward className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-emerald-400 transition-colors" />
+                <SkipForward className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors" />
               </div>
             </button>
           )}
@@ -121,7 +121,7 @@ function App() {
       <div className="relative z-10 flex flex-col items-center space-y-12">
         {/* Brand */}
         <div className="text-center">
-          <h1 className="text-2xl md:text-3xl font-light tracking-[0.2em] text-slate-700 dark:text-slate-300 mb-2">
+          <h1 className="text-2xl md:text-3xl font-light tracking-[0.2em] text-slate-300 mb-2">
             LETS-FOCUS
           </h1>
           <div className="w-24 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent mx-auto"></div>
@@ -137,7 +137,7 @@ function App() {
           <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
             <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
               isCompleted ? 'bg-emerald-400 animate-pulse' :
-              isRunning ? 'bg-emerald-400' : 'bg-slate-400 dark:bg-slate-600'
+              isRunning ? 'bg-emerald-400' : 'bg-slate-600'
             }`}></div>
           </div>
         </div>
@@ -146,7 +146,7 @@ function App() {
         <div className="text-center">
           <p className={`text-sm md:text-base font-light tracking-wide transition-colors duration-300 ${
             isCompleted ? 'text-emerald-400' :
-            isRunning ? 'text-emerald-400' : 'text-slate-500 dark:text-slate-400'
+            isRunning ? 'text-emerald-400' : 'text-slate-400'
           }`}>
             {isCompleted ? 'FOCUS SESSION COMPLETE' :
              isRunning ? 'FOCUS MODE ACTIVE' : 'READY TO FOCUS'}
@@ -161,14 +161,14 @@ function App() {
             className={`group relative w-16 h-16 md:w-20 md:h-20 rounded-full border-2 backdrop-blur-sm transition-all duration-300 hover:scale-105 ${
               isRunning 
                 ? 'border-emerald-400/50 bg-emerald-400/10 hover:bg-emerald-400/20' 
-                : 'border-slate-300/30 dark:border-slate-600/50 hover:border-emerald-400/50 hover:bg-emerald-400/10'
+                : 'border-slate-600/50 hover:border-emerald-400/50 hover:bg-emerald-400/10'
             }`}
           >
             <div className="flex items-center justify-center">
               {isRunning ? (
                 <Pause className="w-6 h-6 md:w-8 md:h-8 text-emerald-400 transition-colors" />
               ) : (
-                <Play className="w-6 h-6 md:w-8 md:h-8 text-slate-400 dark:text-slate-500 group-hover:text-emerald-400 transition-colors ml-1" />
+                <Play className="w-6 h-6 md:w-8 md:h-8 text-slate-500 group-hover:text-emerald-400 transition-colors ml-1" />
               )}
             </div>
           </button>
@@ -176,10 +176,10 @@ function App() {
           {/* Reset Button */}
           <button
             onClick={handleReset}
-            className="group relative w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300/30 dark:border-slate-600/50 hover:border-slate-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-slate-200/10 dark:hover:bg-slate-800/50"
+            className="group relative w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-600/50 hover:border-slate-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-slate-800/50"
           >
             <div className="flex items-center justify-center">
-              <RotateCcw className="w-4 h-4 md:w-5 md:h-5 text-slate-500 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+              <RotateCcw className="w-4 h-4 md:w-5 md:h-5 text-slate-400 group-hover:text-slate-300 transition-colors" />
             </div>
           </button>
         </div>
@@ -190,7 +190,7 @@ function App() {
             <p className="text-emerald-400 text-lg md:text-xl font-light tracking-wide mb-2">
               Time to take a break
             </p>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
+            <p className="text-slate-400 text-sm">
               Click play to start another focus session
             </p>
           </div>
